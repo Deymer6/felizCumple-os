@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Caja Sorpresa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Mulish&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      background-color: #ffcbe6;
+      font-family: 'Dancing Script', cursive;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .mensaje {
+      font-size: 2em;
+      color: #c2185b;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .caja {
+      width: 200px;
+      height: 200px;
+      background-image: url('giftbox.png');
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+      transition: transform 0.5s ease;
+    }
+
+    .caja.abierta {
+      background-image: url('open-box.png');
+      transform: rotateX(180deg);
+    }
+
+    .contenido {
+      display: none;
+      margin-top: 30px;
+      text-align: center;
+      max-width: 400px;
+    }
+
+    .contenido h2 {
+      color: #880e4f;
+      font-size: 1.4em;
+      margin-bottom: 10px;
+    }
+
+    .presentacion {
+      font-size: 1em;
+      font-family: 'Mulish', sans-serif;
+      color: #444;
+      margin-bottom: 15px;
+    }
+
+    form input,
+    form textarea {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-family: 'Mulish', sans-serif;
+    }
+
+    form button {
+      padding: 10px 20px;
+      background-color: #ec5d88;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.2em;
+    }
+
+    .mensaje-enviado {
+      margin-top: 20px;
+      font-family: 'Mulish', sans-serif;
+      color: #2e7d32;
+    }
+
+    .reproductor {
+      margin-bottom: 20px;
+    }
+
+    .reproductor select {
+      margin-top: 10px;
+      padding: 5px;
+      font-family: 'Mulish', sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="mensaje">✨ Presiona la caja para descubrir tu sorpresa ✨</div>
+
+  <div class="caja" id="caja"></div>
+
+  <div class="contenido" id="contenido">
+    <div class="reproductor">
+      <audio id="musica" controls>
+        <source src="tu-musica.mp3" type="audio/mp3" />
+        Tu navegador no soporta audio.
+      </audio>
+      <br />
+      <select id="canciones">
+        <option value="ukulele.mp3">🎵 ukulele</option>
+        <option value="smile.mp3">🌈 smile 2</option>
+        <option value="sunny.mp3">✨ sunny</option>
+        <option value="funnysong.mp3">✨ funnysong</option>
+      </select>
+    </div>
+
+    <h2>Gracias por llegar hasta aquí... 💖</h2>
+    <div class="presentacion">
+      🎯 Escribe tu deseo secreto.<br>
+      Lo enviaremos directamente a Diosito, el universo o tu yo del futuro... o a donde toque 😇✨<br><br>
+    </div>
+
+    <form id="formDeseo">
+      <input type="text" name="user_name" placeholder="Tu nombre" required />
+      <textarea name="message" rows="4" placeholder="Escribe tu deseo aquí..." required></textarea>
+      <button type="submit">Enviar Deseo ✨</button>
+    </form>
+
+    <div class="mensaje-enviado" id="mensajeEnviado"></div>
+  </div>
+
+  <script>
+    const caja = document.getElementById("caja");
+    const contenido = document.getElementById("contenido");
+    const musica = document.getElementById("musica");
+    const select = document.getElementById("canciones");
+    const form = document.getElementById("formDeseo");
+    const mensajeEnviado = document.getElementById("mensajeEnviado");
+
+    caja.addEventListener("click", () => {
+      caja.classList.add("abierta");
+      setTimeout(() => {
+        contenido.style.display = "block";
+        musica.play();
+      }, 600);
+    });
+
+    select.addEventListener("change", function () {
+      musica.src = this.value;
+      musica.play();
+    });
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      form.style.display = "none";
+      mensajeEnviado.innerHTML = "🎉 Prometemos que no se lo diremos a nadie (bueno, tal vez un angelito lo lea 👼)";
+    });
+  </script>
+</body>
+</html>
