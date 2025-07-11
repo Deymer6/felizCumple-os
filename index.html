@@ -7,137 +7,193 @@
   
   <!-- Fuentes personalizadas -->
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Mulish&display=swap" rel="stylesheet">
+<style>
+  * {
+    box-sizing: border-box;
+  }
 
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background-color: #ffcedd;
-      background-image: url(cloud.png);
-      background-repeat: no-repeat;
-      background-position: top left, bottom right;
-      background-size: 200px;
-      font-family: 'Segoe UI', sans-serif;
-      position: relative;
-      height: 100vh;
-    }
+  body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #ffcedd;
+    background-image: url(cloud.png);
+    background-repeat: no-repeat;
+    background-position: top left, bottom right;
+    background-size: 150px;
+    font-family: 'Segoe UI', sans-serif;
+    height: 100vh;
+    position: relative;
+  }
 
-    /* Globos animados */
+  .globo {
+    width: 60px;
+    height: 60px;
+    background-color: #f48fb1;
+    border-radius: 50%;
+    position: absolute;
+    cursor: pointer;
+    animation: flotar 10s infinite ease-in-out;
+    z-index: 1;
+  }
+
+  .globo::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 10px solid #b71c1c;
+  }
+
+  .globo::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 40px;
+    background: #d81b60;
+  }
+
+  @keyframes flotar {
+    0% { transform: translateY(0); }
+    25% { transform: translateY(-30px) translateX(10px); }
+    50% { transform: translateY(-40px) translateX(-10px); }
+    75% { transform: translateY(-30px) translateX(20px); }
+    100% { transform: translateY(0); }
+  }
+
+  .mensaje-final {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff0f5;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    text-align: center;
+    display: none;
+    font-family: 'Dancing Script', cursive;
+    z-index: 2;
+    max-width: 90%;
+    width: 400px;
+  }
+
+  .mensaje-final h1 {
+    font-size: 2em;
+    color: #c2185b;
+    margin-bottom: 20px;
+  }
+
+  .mensaje-final button {
+    padding: 12px 24px;
+    font-size: 1.1em;
+    background-color: #c2185b;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: 'Dancing Script', sans-serif;
+  }
+
+  .frase-globo {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 30px;
+    border-radius: 20px;
+    font-size: 1.4em;
+    color: #880e4f;
+    font-family: 'Great Vibes', cursive;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 3s ease;
+    z-index: 3;
+    max-width: 90%;
+  }
+
+  .btn-musica {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #ec5d88;
+    color: white;
+    font-size: 1em;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: 'Dancing Script', cursive;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease;
+    z-index: 4;
+  }
+
+  .btn-musica:hover {
+    background-color: #d81b60;
+    transform: scale(1.05);
+  }
+
+  /* 🌐 Responsive: Tablets */
+  @media (max-width: 768px) {
     .globo {
-      width: 70px;
-      height: 70px;
-      background-color: #f48fb1;
-      border-radius: 50%;
-      position: absolute;
-      cursor: pointer;
-      animation: flotar 10s infinite ease-in-out;
-      z-index: 1;
-    }
-
-    .globo::before {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 50%;
-      transform: translateX(-50%);
-      border-left: 6px solid transparent;
-      border-right: 6px solid transparent;
-      border-top: 10px solid #b71c1c;
-    }
-
-    .globo::after {
-      content: '';
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 1px;
-      height: 40px;
-      background: #d81b60;
-    }
-
-    @keyframes flotar {
-      0% { transform: translateY(3); }
-      25% { transform: translateY(-30px) translateX(10px); }
-      50% { transform: translateY(-40px) translateX(-10px); }
-      75% { transform: translateY(-30px) translateX(20px); }
-      100% { transform: translateY(3); }
-    }
-
-    /* Mensaje al final */
-    .mensaje-final {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #fff0f5;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      text-align: center;
-      display: none;
-      font-family: 'Dancing Script', cursive;
-      z-index: 2;
+      width: 50px;
+      height: 50px;
     }
 
     .mensaje-final h1 {
-      font-size: 2.5em;
-      color: #c2185b;
-      margin-bottom: 20px;
-    }
-
-    .mensaje-final button {
-      padding: 12px 24px;
-      font-size: 1.1em;
-      background-color: #c2185b;
-      color: white;
-      border: none;
-      border-radius: 25px;
-      cursor: pointer;
-      font-family: 'Dancing Script', sans-serif;
-    }
-
-    /* Frases emergentes */
-    .frase-globo {
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(255, 255, 255, 0.9);
-      padding: 10px 30px;
-      border-radius: 20px;
       font-size: 1.6em;
-      color: #880e4f;
-      font-family: 'Great Vibes', cursive;
-      text-align: center;
-      opacity: 0;
-      transition: opacity 3s ease;
-      z-index: 3;
     }
 
-    /* Botón de música */
+    .frase-globo {
+      font-size: 1.2em;
+    }
+
     .btn-musica {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background-color: #ec5d88;
-      color: white;
-      font-size: 1.1em;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      font-family: 'Dancing Script', cursive;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      transition: transform 0.2s ease;
-      z-index: 4;
+      font-size: 0.9em;
+      padding: 8px 16px;
+    }
+  }
+
+  /* 📱 Responsive: Celulares */
+  @media (max-width: 480px) {
+    .globo {
+      width: 40px;
+      height: 40px;
     }
 
-    .btn-musica:hover {
-      background-color: #d81b60;
-      transform: scale(1.05);
+    .mensaje-final {
+      width: 90%;
+      padding: 15px;
     }
-  </style>
+
+    .mensaje-final h1 {
+      font-size: 1.4em;
+    }
+
+    .btn-musica {
+    top: auto;
+    bottom: 15px;
+    right: 15px;
+    z-index: 4;
+  }
+
+  .frase-globo {
+    top: 10px;
+    font-size: 1em;
+    padding: 8px 16px;
+    max-width: 85%;
+  }
+  }
+</style>
+
 </head>
 <body>
 
