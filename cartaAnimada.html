@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Carta Mágica</title>
+
+  <!-- Fuentes -->
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Mulish&display=swap" rel="stylesheet">
 
   <style>
@@ -107,16 +109,48 @@
       cursor: pointer;
       font-family: 'Dancing Script', cursive;
     }
+
+    /* Botón de música flotante */
+    .btn-musica {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #ec5d88;
+      color: white;
+      font-size: 1.1em;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-family: 'Dancing Script', cursive;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transition: transform 0.2s ease;
+      z-index: 10;
+    }
+
+    .btn-musica:hover {
+      background-color: #d81b60;
+      transform: scale(1.05);
+    }
   </style>
 </head>
 <body>
+
+  <!-- Botón de música -->
+  <button class="btn-musica" onclick="document.getElementById('musica').play()">🎵 Música</button>
+  <audio id="musica" loop>
+    <source src="moonlightcoffee.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Envoltorio inicial -->
   <div class="envoltorio" id="envoltorio">
     <span>✨ Presiona aquí para abrir tu carta ✨</span>
   </div>
 
+  <!-- Cuaderno abierto con frases -->
   <div class="cuaderno" id="cuaderno">
     <div class="pagina portada">
-      <p>Ana </p>
+      <p>Ana</p>
       <p>FELIZ <br>CUMPLEAÑOS</p>
     </div>
     <div class="pagina contenido">
@@ -127,11 +161,14 @@
   </div>
 
   <script>
+    // Referencias a elementos
     const envoltorio = document.getElementById('envoltorio');
     const cuaderno = document.getElementById('cuaderno');
     const frase = document.getElementById('frase');
     const botonSiguiente = document.getElementById('botonSiguiente');
     const botonFinal = document.getElementById('botonFinal');
+
+    // Frases de la carta
     const frases = [
       "Hoy no solo celebramos tu nacimiento, sino la historia que tejiste con cada paso, cada lágrima, cada risa. Felices 18, que este nuevo ciclo sea tan valiente como tú 💖",
       "Cumplir 18 no es volverse adulta, es comenzar a escribir tu vida con tinta propia. Que el amor, la luz y la verdad guíen cada una de tus decisiones 🌟",
@@ -151,12 +188,14 @@
 
     let indiceFrase = 0;
 
+    // Al presionar la carta cerrada
     envoltorio.addEventListener('click', () => {
       envoltorio.style.display = 'none';
       cuaderno.style.display = 'flex';
       mostrarFrase();
     });
 
+    // Mostrar frase actual con transición
     function mostrarFrase() {
       frase.style.opacity = 0;
       setTimeout(() => {
@@ -165,10 +204,13 @@
       }, 500);
     }
 
+    // Avanzar a la siguiente frase
     function siguienteFrase() {
       if (indiceFrase < frases.length - 1) {
         indiceFrase++;
         mostrarFrase();
+
+        // Mostrar botón final si es la última frase
         if (indiceFrase === frases.length - 1) {
           botonSiguiente.style.display = 'none';
           botonFinal.style.display = 'block';
