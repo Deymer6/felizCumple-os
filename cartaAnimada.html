@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carta Mágica</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Mulish&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f9c2d4;
+      font-family: 'Dancing Script', sans-serif;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .envoltorio {
+      background-color: #ec5d88;
+      width: 300px;
+      height: 400px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+    }
+
+    .envoltorio span {
+      font-size: 1.2em;
+      background-color: #ffffffaa;
+      color: #880e4f;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .cuaderno {
+      width: 600px;
+      height: 400px;
+      background-color: #f8a2b4;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      position: relative;
+      display: none;
+    }
+
+    .pagina {
+      width: 50%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .portada {
+      background-color: #ec5d88;
+      color: white;
+      font-size: 1.4em;
+      font-family: 'Dancing Script', cursive;
+      text-align: center;
+    }
+
+    .contenido {
+      background-color: #fffafc;
+      font-family: 'Dancing Script', sans-serif;
+      position: relative;
+    }
+
+    .frase {
+      font-size: 1.8em;
+      color: #c2185b;
+      opacity: 0;
+      transition: opacity 1s ease-in;
+      text-align: center;
+    }
+
+    .boton-siguiente {
+      margin-top: 30px;
+      background: none;
+      border: none;
+      font-size: 1em;
+      color: #c2185b;
+      font-family: 'Dancing Script', cursive;
+      cursor: pointer;
+      border-bottom: 1px solid #c2185b;
+    }
+
+    #botonFinal {
+      display: none;
+      margin-top: 30px;
+      background: #ec5d88;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: none;
+      font-size: 1em;
+      cursor: pointer;
+      font-family: 'Dancing Script', cursive;
+    }
+  </style>
+</head>
+<body>
+  <div class="envoltorio" id="envoltorio">
+    <span>✨ Presiona aquí para abrir tu carta ✨</span>
+  </div>
+
+  <div class="cuaderno" id="cuaderno">
+    <div class="pagina portada">
+      <p>Ana </p>
+      <p>FELIZ <br>CUMPLEAÑOS</p>
+    </div>
+    <div class="pagina contenido">
+      <div class="frase" id="frase"></div>
+      <button class="boton-siguiente" id="botonSiguiente" onclick="siguienteFrase()">siguiente página</button>
+      <button id="botonFinal" onclick="window.location.href='sorpresaFinal.html'">Abrir Sorpresa</button>
+    </div>
+  </div>
+
+  <script>
+    const envoltorio = document.getElementById('envoltorio');
+    const cuaderno = document.getElementById('cuaderno');
+    const frase = document.getElementById('frase');
+    const botonSiguiente = document.getElementById('botonSiguiente');
+    const botonFinal = document.getElementById('botonFinal');
+    const frases = [
+      "Hoy no solo celebramos tu nacimiento, sino la historia que tejiste con cada paso, cada lágrima, cada risa. Felices 18, que este nuevo ciclo sea tan valiente como tú 💖",
+      "Cumplir 18 no es volverse adulta, es comenzar a escribir tu vida con tinta propia. Que el amor, la luz y la verdad guíen cada una de tus decisiones 🌟",
+      "Hoy el calendario marca un número, pero el corazón celebra una evolución: la niña que fuiste abraza a la mujer que estás comenzando a ser ✨",
+      "Que este cumpleaños sea un espejo donde veas todo lo que has superado, todo lo que te espera, y sobre todo... lo valiosa que eres para quienes te aman 🎁",
+      "Cada año ha sido una página escrita con emoción, pero este capítulo 18 viene con alas. Que tengas el coraje de volar donde tu alma te llame 🕊️",
+      "Felices 18 a esa persona que ha aprendido a levantarse con elegancia, a reír con fuerza y a amar con profundidad. Hoy empieza tu mejor versión 🌷",
+      "No se trata solo de velas ni regalos. Hoy se trata de ti, de tu fuego interior, de todo lo que eres y de lo mucho que estás por descubrir 🎂",
+      "Este cumpleaños no es el fin de tu infancia, sino el inicio de tus elecciones, tus caminos, tus sueños. Y no podrías estar más lista 🌈",
+      "Eres la suma de cada cumpleaños, de cada deseo pedido en silencio, de cada abrazo que guardaste. Hoy, celébrate como nunca antes 💫",
+      "Que este cumpleaños te recuerde que no necesitas ser perfecta para ser increíble. Eres suficiente. Eres hermosa. Eres tú, y eso lo cambia todo 💌",
+      "Tu existencia es una luz que ilumina muchas vidas ✨",
+      "Nunca dejes de soñar, tu brillo es único 💫",
+      "Este es tu año, y viene cargado de bendiciones 🏱",
+      "¡Feliz cumpleaños, con todo mi cariño! 🎂"
+    ];
+
+    let indiceFrase = 0;
+
+    envoltorio.addEventListener('click', () => {
+      envoltorio.style.display = 'none';
+      cuaderno.style.display = 'flex';
+      mostrarFrase();
+    });
+
+    function mostrarFrase() {
+      frase.style.opacity = 0;
+      setTimeout(() => {
+        frase.textContent = frases[indiceFrase];
+        frase.style.opacity = 1;
+      }, 500);
+    }
+
+    function siguienteFrase() {
+      if (indiceFrase < frases.length - 1) {
+        indiceFrase++;
+        mostrarFrase();
+        if (indiceFrase === frases.length - 1) {
+          botonSiguiente.style.display = 'none';
+          botonFinal.style.display = 'block';
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>
