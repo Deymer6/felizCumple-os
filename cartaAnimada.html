@@ -106,7 +106,9 @@
     }
 
     #botonFinal {
-      display: none;
+      display: none;            /* oculto hasta la última frase (JS lo cambia a inline-flex) */
+      align-items: center;
+      justify-content: center;
       margin-top: 30px;
       background: #ec5d88;
       color: white;
@@ -149,7 +151,7 @@
       margin-right: 0.4em;
       flex-shrink: 0;
     }
-    .btn-musica, #botonFinal {
+    .btn-musica {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -297,7 +299,7 @@
         // Mostrar botón final si es la última frase
         if (indiceFrase === frases.length - 1) {
           botonSiguiente.style.display = 'none';
-          botonFinal.style.display = 'block';
+          botonFinal.style.display = 'inline-flex';
         }
       }
     }
