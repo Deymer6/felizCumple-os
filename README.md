@@ -50,9 +50,11 @@ Y abre **http://localhost:8765/index.html** en tu navegador.
 1. Sube todos los archivos a un repositorio de GitHub.
 2. Entra a **Settings → Pages**.
 3. En *Branch* elige `main` y la carpeta `/ (root)`, y guarda.
-4. En un minuto tu web estará en `https://TU-USUARIO.github.io/TU-REPO/`.
+4. En un minuto tu web estará en **https://deymer6.github.io/felizCumple-os/**
 
-> 💡 Para que el enlace muestre una vista previa bonita al compartirlo por WhatsApp, edita en `index.html` las líneas `og:image` y `og:url` con la URL completa de tu GitHub Pages.
+> 💡 La vista previa al compartir por WhatsApp ya está configurada en `index.html`
+> con esa URL. Si cambias el nombre del repositorio, actualiza las líneas `og:url`
+> y `og:image`.
 
 ---
 
