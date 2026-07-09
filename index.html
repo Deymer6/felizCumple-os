@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¡Feliz Cumpleaños!</title>
+
+  <!-- Favicon: icono de regalo (SVG, sin archivo externo) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ec5d88'%3E%3Cpath d='M20 7h-1.6a3 3 0 0 0-4.4-4A3 3 0 0 0 12 4.2 3 3 0 0 0 10 3a3 3 0 0 0-2.4 4H6a2 2 0 0 0-2 2v2h7V7h2v4h7V9a2 2 0 0 0-2-2zM9 5a1 1 0 0 1 0 2H8V6a1 1 0 0 1 1-1zm6 0a1 1 0 0 1 1 1v1h-1a1 1 0 0 1 0-2z'/%3E%3Cpath d='M4 13v7a2 2 0 0 0 2 2h5v-9H4zm9 9h5a2 2 0 0 0 2-2v-7h-7v9z'/%3E%3C/svg%3E">
+
+  <!-- 🔗 Vista previa al compartir el enlace (WhatsApp, redes sociales) -->
+  <!-- NOTA: para que WhatsApp muestre la imagen, cambia las 2 rutas de abajo por la
+       URL completa de tu GitHub Pages, p. ej. https://usuario.github.io/cumpleanos/giftbox.png -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="🎉 ¡Feliz Cumpleaños!">
+  <meta property="og:description" content="Te preparé una sorpresa... ábrela 💖">
+  <meta property="og:image" content="giftbox.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Fuentes personalizadas -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Mulish&display=swap" rel="stylesheet">
+
+  <!-- ⚙️ Configuración central (nombre, edad y textos) -->
+  <script src="config.js"></script>
+  <!-- ✨ Iconos SVG y confetti -->
+  <script src="efectos.js"></script>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #ffcedd;
+    background-image: url(cloud.png);
+    background-repeat: no-repeat;
+    background-position: top left, bottom right;
+    background-size: 150px;
+    font-family: 'Segoe UI', sans-serif;
+    height: 100vh;
+    position: relative;
+  }
+
+  .globo {
+    width: 60px;
+    height: 60px;
+    background-color: #f48fb1;
+    border-radius: 50%;
+    position: absolute;
+    cursor: pointer;
+    animation: flotar 10s infinite ease-in-out;
+    z-index: 1;
+  }
+
+  .globo::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 10px solid #b71c1c;
+  }
+
+  .globo::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 40px;
+    background: #d81b60;
+  }
+
+  @keyframes flotar {
+    0% { transform: translateY(0); }
+    25% { transform: translateY(-30px) translateX(10px); }
+    50% { transform: translateY(-40px) translateX(-10px); }
+    75% { transform: translateY(-30px) translateX(20px); }
+    100% { transform: translateY(0); }
+  }
+
+  .mensaje-final {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff0f5;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    text-align: center;
+    display: none;
+    font-family: 'Dancing Script', cursive;
+    z-index: 2;
+    max-width: 90%;
+    width: 400px;
+  }
+
+  .mensaje-final h1 {
+    font-size: 2em;
+    color: #c2185b;
+    margin-bottom: 20px;
+  }
+
+  .mensaje-final button {
+    padding: 12px 24px;
+    font-size: 1.1em;
+    background-color: #c2185b;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: 'Dancing Script', sans-serif;
+  }
+
+  .frase-globo {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 30px;
+    border-radius: 20px;
+    font-size: 1.4em;
+    color: #880e4f;
+    font-family: 'Great Vibes', cursive;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 3s ease;
+    z-index: 3;
+    max-width: 90%;
+  }
+
+  .btn-musica {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #ec5d88;
+    color: white;
+    font-size: 1em;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: 'Dancing Script', cursive;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease;
+    z-index: 4;
+  }
+
+  .btn-musica:hover {
+    background-color: #d81b60;
+    transform: scale(1.05);
+  }
+
+  /* Iconos SVG en línea (heredan tamaño y color del texto) */
+  .ico {
+    width: 1.1em;
+    height: 1.1em;
+    vertical-align: -0.18em;
+    margin-right: 0.4em;
+    flex-shrink: 0;
+  }
+  .btn-musica, .mensaje-final button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Contador de globos reventados */
+  .contador {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #c2185b;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.3em;
+    display: inline-flex;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    z-index: 4;
+  }
+
+  /* Globo que sube y se desvanece al reventar */
+  .globo.pop {
+    transition: transform 0.9s ease-in, opacity 0.9s ease-in;
+    transform: translateY(-120vh) scale(1.2);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Pantalla de inicio (arranca la música al tocar) */
+  .overlay-inicio {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(160deg, #ffcedd 0%, #f9a8c6 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: opacity 0.6s ease;
+  }
+  .overlay-inicio.oculto {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .btn-empezar {
+    display: inline-flex;
+    align-items: center;
+    background: #ec5d88;
+    color: #fff;
+    border: none;
+    padding: 18px 36px;
+    border-radius: 40px;
+    font-size: 1.8em;
+    font-family: 'Dancing Script', cursive;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(216,27,96,0.35);
+    animation: latido 1.6s ease-in-out infinite;
+  }
+  .btn-empezar:hover { background: #d81b60; }
+  @keyframes latido {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+  }
+
+  /* 🌐 Responsive: Tablets */
+  @media (max-width: 768px) {
+    .globo {
+      width: 50px;
+      height: 50px;
+    }
+
+    .mensaje-final h1 {
+      font-size: 1.6em;
+    }
+
+    .frase-globo {
+      font-size: 1.2em;
+    }
+
+    .btn-musica {
+      font-size: 0.9em;
+      padding: 8px 16px;
+    }
+  }
+
+  /* 📱 Responsive: Celulares */
+  @media (max-width: 480px) {
+    .globo {
+      width: 40px;
+      height: 40px;
+    }
+
+    .mensaje-final {
+      width: 90%;
+      padding: 15px;
+    }
+
+    .mensaje-final h1 {
+      font-size: 1.4em;
+    }
+
+    .btn-musica {
+    top: auto;
+    bottom: 15px;
+    right: 15px;
+    z-index: 4;
+  }
+
+  .frase-globo {
+    top: 10px;
+    font-size: 1em;
+    padding: 8px 16px;
+    max-width: 85%;
+  }
+  }
+</style>
+
+</head>
+<body>
+
+  <!-- Pantalla de inicio: al tocar arranca la música (se rellena desde config.js) -->
+  <div class="overlay-inicio" id="overlayInicio">
+    <button class="btn-empezar" id="btnEmpezar"></button>
+  </div>
+
+  <!-- Contador de globos reventados -->
+  <div class="contador" id="contador"></div>
+
+  <!-- Mensaje final después de reventar los globos (se rellena desde config.js) -->
+  <div class="mensaje-final" id="mensajeFinal">
+    <h1 id="tituloFinal"></h1>
+    <button id="btnCarta"></button>
+  </div>
+
+  <!-- Frase que aparece con cada globo -->
+  <div class="frase-globo" id="fraseGlobo"></div>
+
+  <!-- Audio de fondo -->
+  <audio id="musica" loop></audio>
+
+  <!-- Botón para iniciar/pausar la música -->
+  <button class="btn-musica" id="btnMusica"></button>
+
+  <!-- Audio de sonido de "pop" -->
+   <audio id="popSound" src="balloon-pop-48030.mp3"></audio>
+
+ 
+  <script>
+    // Título de la pestaña
+    document.title = CONFIG.titulos.inicio;
+
+    // Número total de globos = edad (18 años -> 18 globos)
+    const totalGlobos = CONFIG.edad;
+    let globosReventados = 0;
+
+    // Lista de frases para cada globo (definidas en config.js)
+    const frases = CONFIG.globos.frases;
+
+    const musica = document.getElementById('musica');
+    musica.src = CONFIG.musica.inicio;
+
+    // Actualiza el contador "X/Total"
+    function actualizarContador() {
+      document.getElementById('contador').innerHTML =
+        ICONOS.globo + globosReventados + '/' + totalGlobos;
+    }
+
+    // Muestra una frase al centro superior
+    function mostrarFrase(indice) {
+      const fraseEl = document.getElementById('fraseGlobo');
+      fraseEl.textContent = frases[indice] || "";
+      fraseEl.style.opacity = 1;
+      setTimeout(() => {
+        fraseEl.style.opacity = 0;
+      }, 4000);
+    }
+
+    // Crea globos en posiciones aleatorias sin que se superpongan
+    function crearGlobos() {
+      const posiciones = [];
+      for (let i = 0; i < totalGlobos; i++) {
+        const globo = document.createElement('div');
+        globo.classList.add('globo');
+
+        // Colores aleatorios
+        const colores = ['#f8bbd0', '#f48fb1', '#f06292', '#fce4ec', '#ec407a'];
+        const color = colores[Math.floor(Math.random() * colores.length)];
+        globo.style.backgroundColor = color;
+
+        // Posicionamiento sin superposición (con límite de intentos por si
+        // la pantalla es muy pequeña, para no bloquear el navegador)
+        let left, top;
+        let intentos = 0;
+        do {
+          left = Math.random() * (window.innerWidth - 80);
+          top = Math.random() * (window.innerHeight - 180) + 100;
+          intentos++;
+        } while (
+          intentos < 60 &&
+          posiciones.some(pos => Math.abs(pos.left - left) < 80 && Math.abs(pos.top - top) < 80)
+        );
+
+        posiciones.push({ left, top });
+        globo.style.left = `${left}px`;
+        globo.style.top = `${top}px`;
+
+        // Evento al hacer clic: revienta, suena, muestra frase y vuela
+        globo.addEventListener('click', () => {
+          if (globo.classList.contains('pop')) return; // evita doble conteo
+          const pop = document.getElementById('popSound');
+          pop.currentTime = 0;
+          pop.play().catch(() => {});
+
+          globosReventados++;
+          actualizarContador();
+          if (globosReventados <= frases.length) {
+            mostrarFrase(globosReventados - 1);
+          }
+
+          // Anima el globo (sube y se desvanece) antes de quitarlo
+          globo.classList.add('pop');
+          setTimeout(() => globo.remove(), 900);
+
+          if (globosReventados === totalGlobos) {
+            document.getElementById('mensajeFinal').style.display = 'block';
+            lanzarConfetti();
+          }
+        });
+
+        document.body.appendChild(globo);
+      }
+    }
+
+    // Al cargar la página: prepara botones, contador y pantalla de inicio
+    window.onload = function () {
+      // Mensaje final + botón "Ver mi carta" con icono
+      document.getElementById('tituloFinal').textContent =
+        CONFIG.aplicar(CONFIG.globos.mensajeFinal);
+      const btnCarta = document.getElementById('btnCarta');
+      btnCarta.innerHTML = ICONOS.sobre + CONFIG.globos.botonCarta;
+      btnCarta.addEventListener('click', () => {
+        window.location.href = 'cartaAnimada.html';
+      });
+
+      // Botón flotante de música (play / pausa)
+      const btnMusica = document.getElementById('btnMusica');
+      btnMusica.innerHTML = ICONOS.musica + 'Música';
+      btnMusica.addEventListener('click', () => {
+        if (musica.paused) musica.play().catch(() => {});
+        else musica.pause();
+      });
+
+      // Pantalla de inicio: al tocar arranca la música (permiso del gesto)
+      const btnEmpezar = document.getElementById('btnEmpezar');
+      btnEmpezar.innerHTML = ICONOS.play + CONFIG.pantallaInicio.titulo;
+      btnEmpezar.addEventListener('click', () => {
+        document.getElementById('overlayInicio').classList.add('oculto');
+        musica.play().catch(() => {});
+        sessionStorage.setItem('musicaActivada', '1'); // recordarlo para las otras páginas
+      });
+
+      actualizarContador();
+      crearGlobos();
+    };
+  </script>
+
+</body>
+</html>

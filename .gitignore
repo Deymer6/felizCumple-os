@@ -1,0 +1,8 @@
+# Documentación interna de Claude Code — solo local, no subir a GitHub
+CLAUDE.md
+.claude/
+
+# Archivos temporales del sistema
+Thumbs.db
+Desktop.ini
+.DS_Store

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carta Mágica</title>
+
+  <!-- Favicon: icono de regalo (SVG, sin archivo externo) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ec5d88'%3E%3Cpath d='M20 7h-1.6a3 3 0 0 0-4.4-4A3 3 0 0 0 12 4.2 3 3 0 0 0 10 3a3 3 0 0 0-2.4 4H6a2 2 0 0 0-2 2v2h7V7h2v4h7V9a2 2 0 0 0-2-2zM9 5a1 1 0 0 1 0 2H8V6a1 1 0 0 1 1-1zm6 0a1 1 0 0 1 1 1v1h-1a1 1 0 0 1 0-2z'/%3E%3Cpath d='M4 13v7a2 2 0 0 0 2 2h5v-9H4zm9 9h5a2 2 0 0 0 2-2v-7h-7v9z'/%3E%3C/svg%3E">
+
+  <!-- Fuentes -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Mulish&display=swap" rel="stylesheet">
+
+  <!-- ⚙️ Configuración central (nombre, edad y textos) -->
+  <script src="config.js"></script>
+  <!-- ✨ Iconos SVG -->
+  <script src="efectos.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f9c2d4;
+      font-family: 'Dancing Script', sans-serif;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .envoltorio {
+      background-color: #ec5d88;
+      width: 300px;
+      height: 400px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+    }
+
+    .envoltorio span {
+      font-size: 1.2em;
+      background-color: #ffffffaa;
+      color: #880e4f;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .cuaderno {
+      width: 600px;
+      height: 400px;
+      background-color: #f8a2b4;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      position: relative;
+      display: none;
+    }
+
+    .pagina {
+      width: 50%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .portada {
+      background-color: #ec5d88;
+      color: white;
+      font-size: 1.4em;
+      font-family: 'Dancing Script', cursive;
+      text-align: center;
+    }
+
+    .contenido {
+      background-color: #fffafc;
+      font-family: 'Dancing Script', sans-serif;
+      position: relative;
+    }
+
+    .frase {
+      font-size: 1.8em;
+      color: #c2185b;
+      opacity: 0;
+      transition: opacity 1s ease-in;
+      text-align: center;
+    }
+
+    .boton-siguiente {
+      margin-top: 30px;
+      background: none;
+      border: none;
+      font-size: 1em;
+      color: #c2185b;
+      font-family: 'Dancing Script', cursive;
+      cursor: pointer;
+      border-bottom: 1px solid #c2185b;
+    }
+
+    #botonFinal {
+      display: none;
+      margin-top: 30px;
+      background: #ec5d88;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: none;
+      font-size: 1em;
+      cursor: pointer;
+      font-family: 'Dancing Script', cursive;
+    }
+
+    /* Botón de música flotante */
+    .btn-musica {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #ec5d88;
+      color: white;
+      font-size: 1.1em;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-family: 'Dancing Script', cursive;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transition: transform 0.2s ease;
+      z-index: 10;
+    }
+
+    .btn-musica:hover {
+      background-color: #d81b60;
+      transform: scale(1.05);
+    }
+
+    /* Iconos SVG en línea (heredan tamaño y color del texto) */
+    .ico {
+      width: 1.1em;
+      height: 1.1em;
+      vertical-align: -0.18em;
+      margin-right: 0.4em;
+      flex-shrink: 0;
+    }
+    .btn-musica, #botonFinal {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Responsivo: vista móvil */
+@media (max-width: 480px) {
+  .envoltorio {
+    width: 90vw;
+    height: 300px;
+  }
+
+  .cuaderno {
+    flex-direction: column;
+    width: 90vw;
+    height: 85vh;
+  }
+
+  .pagina {
+    width: 100%;
+    height: 50%;
+    padding: 10px;
+  }
+
+  .frase {
+    font-size: 1.2em;
+  }
+
+  .btn-musica {
+    bottom: 15px;
+    top: auto;
+    right: 15px;
+    font-size: 0.95em;
+    padding: 8px 16px;
+  }
+}
+
+/* Responsivo: tablet */
+@media (min-width: 481px) and (max-width: 768px) {
+  .envoltorio {
+    width: 80vw;
+    height: 350px;
+  }
+
+  .cuaderno {
+    width: 90vw;
+    height: 80vh;
+  }
+
+  .pagina {
+    width: 50%;
+    padding: 15px;
+  }
+
+  .frase {
+    font-size: 1.4em;
+  }
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Botón de música -->
+  <button class="btn-musica" id="btnMusica"></button>
+  <audio id="musica" loop></audio>
+
+  <!-- Envoltorio inicial -->
+  <div class="envoltorio" id="envoltorio">
+    <span>✨ Presiona aquí para abrir tu carta ✨</span>
+  </div>
+
+  <!-- Cuaderno abierto con frases -->
+  <div class="cuaderno" id="cuaderno">
+    <div class="pagina portada">
+      <p id="portadaNombre"></p>
+      <p id="portadaTitulo"></p>
+    </div>
+    <div class="pagina contenido">
+      <div class="frase" id="frase"></div>
+      <button class="boton-siguiente" id="botonSiguiente" onclick="siguienteFrase()">siguiente página</button>
+      <button id="botonFinal" onclick="window.location.href='sorpresaFinal.html'"></button>
+    </div>
+  </div>
+
+  <script>
+    // Título de la pestaña
+    document.title = CONFIG.titulos.carta;
+
+    // Referencias a elementos
+    const envoltorio = document.getElementById('envoltorio');
+    const cuaderno = document.getElementById('cuaderno');
+    const frase = document.getElementById('frase');
+    const botonSiguiente = document.getElementById('botonSiguiente');
+    const botonFinal = document.getElementById('botonFinal');
+
+    // Portada y botón final con icono (desde config.js)
+    document.getElementById('portadaNombre').textContent =
+      CONFIG.aplicar(CONFIG.carta.portadaNombre);
+    document.getElementById('portadaTitulo').innerHTML =
+      CONFIG.aplicar(CONFIG.carta.portadaTitulo);
+    botonFinal.innerHTML = ICONOS.regalo + CONFIG.carta.botonSorpresa;
+
+    // Música de fondo (desde config.js). Si ya se activó en la página
+    // anterior, intenta reanudar automáticamente.
+    const musica = document.getElementById('musica');
+    musica.src = CONFIG.musica.carta;
+    const btnMusica = document.getElementById('btnMusica');
+    btnMusica.innerHTML = ICONOS.musica + 'Música';
+    btnMusica.addEventListener('click', () => {
+      if (musica.paused) musica.play().catch(() => {});
+      else musica.pause();
+    });
+    if (sessionStorage.getItem('musicaActivada') === '1') {
+      musica.play().catch(() => {});
+    }
+
+    // Frases de la carta (definidas en config.js)
+    const frases = CONFIG.carta.frases.map(f => CONFIG.aplicar(f));
+
+    let indiceFrase = 0;
+
+    // Al presionar la carta cerrada
+    envoltorio.addEventListener('click', () => {
+      envoltorio.style.display = 'none';
+      cuaderno.style.display = 'flex';
+      mostrarFrase();
+    });
+
+    // Mostrar frase actual con transición
+    function mostrarFrase() {
+      frase.style.opacity = 0;
+      setTimeout(() => {
+        frase.textContent = frases[indiceFrase];
+        frase.style.opacity = 1;
+      }, 500);
+    }
+
+    // Avanzar a la siguiente frase
+    function siguienteFrase() {
+      if (indiceFrase < frases.length - 1) {
+        indiceFrase++;
+        mostrarFrase();
+
+        // Mostrar botón final si es la última frase
+        if (indiceFrase === frases.length - 1) {
+          botonSiguiente.style.display = 'none';
+          botonFinal.style.display = 'block';
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>

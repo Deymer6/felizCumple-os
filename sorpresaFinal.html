@@ -1,0 +1,260 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Caja Sorpresa</title>
+
+  <!-- Favicon: icono de regalo (SVG, sin archivo externo) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ec5d88'%3E%3Cpath d='M20 7h-1.6a3 3 0 0 0-4.4-4A3 3 0 0 0 12 4.2 3 3 0 0 0 10 3a3 3 0 0 0-2.4 4H6a2 2 0 0 0-2 2v2h7V7h2v4h7V9a2 2 0 0 0-2-2zM9 5a1 1 0 0 1 0 2H8V6a1 1 0 0 1 1-1zm6 0a1 1 0 0 1 1 1v1h-1a1 1 0 0 1 0-2z'/%3E%3Cpath d='M4 13v7a2 2 0 0 0 2 2h5v-9H4zm9 9h5a2 2 0 0 0 2-2v-7h-7v9z'/%3E%3C/svg%3E">
+
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Mulish&display=swap" rel="stylesheet"/>
+
+  <!-- ⚙️ Configuración central (nombre, edad y textos) -->
+  <script src="config.js"></script>
+  <!-- ✨ Iconos SVG y confetti -->
+  <script src="efectos.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      background-color: #ffcbe6;
+      font-family: 'Dancing Script', cursive;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .mensaje {
+      font-size: 2em;
+      color: #c2185b;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .caja {
+      width: 200px;
+      height: 200px;
+      background-image: url('giftbox.png');
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+      transition: transform 0.5s ease;
+    }
+
+    .caja.abierta {
+      background-image: url('open-box.png');
+      transform: rotateX(180deg);
+    }
+
+    .contenido {
+      display: none;
+      margin-top: 30px;
+      text-align: center;
+      max-width: 400px;
+    }
+
+    .contenido h2 {
+      color: #880e4f;
+      font-size: 1.4em;
+      margin-bottom: 10px;
+    }
+
+    .presentacion {
+      font-size: 1em;
+      font-family: 'Mulish', sans-serif;
+      color: #444;
+      margin-bottom: 15px;
+    }
+
+    form input,
+    form textarea {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-family: 'Mulish', sans-serif;
+    }
+
+    form button {
+      padding: 10px 20px;
+      background-color: #ec5d88;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.2em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Iconos SVG en línea (heredan tamaño y color del texto) */
+    .ico {
+      width: 1.1em;
+      height: 1.1em;
+      vertical-align: -0.18em;
+      margin-right: 0.4em;
+      flex-shrink: 0;
+    }
+
+    .mensaje-enviado {
+      margin-top: 20px;
+      font-family: 'Mulish', sans-serif;
+      color: #2e7d32;
+    }
+
+    .reproductor {
+      margin-bottom: 20px;
+    }
+
+    .reproductor select {
+      margin-top: 10px;
+      padding: 5px;
+      font-family: 'Mulish', sans-serif;
+    }
+    /* Responsivo: móviles */
+@media (max-width: 480px) {
+  .mensaje {
+    font-size: 1.4em;
+    padding: 0 10px;
+  }
+
+  .caja {
+    width: 150px;
+    height: 150px;
+    background-size: contain;
+  }
+
+  .contenido {
+    margin-top: 20px;
+    width: 90vw;
+  }
+
+  .contenido h2 {
+    font-size: 1.2em;
+  }
+
+  .presentacion {
+    font-size: 0.95em;
+  }
+
+  form input,
+  form textarea {
+    font-size: 0.95em;
+  }
+
+  form button {
+    font-size: 1em;
+    padding: 8px 16px;
+  }
+
+  .reproductor select {
+    width: 70%;
+    font-size: 0.95em;
+  }
+}
+
+/* Responsivo: tablets */
+@media (min-width: 481px) and (max-width: 768px) {
+  .caja {
+    width: 180px;
+    height: 180px;
+  }
+
+  .contenido {
+    width: 80vw;
+  }
+
+  .mensaje {
+    font-size: 1.7em;
+    padding: 0 20px;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="mensaje" id="mensajeCaja"></div>
+
+  <div class="caja" id="caja"></div>
+
+  <div class="contenido" id="contenido">
+    <div class="reproductor">
+      <audio id="musica" controls>
+        Tu navegador no soporta audio.
+      </audio>
+      <br />
+      <select id="canciones"></select>
+    </div>
+
+    <h2 id="tituloGracias"></h2>
+    <div class="presentacion" id="presentacion"></div>
+
+    <form id="formDeseo">
+      <input type="text" name="user_name" id="inputNombre" required />
+      <textarea name="message" id="inputDeseo" rows="4" required></textarea>
+      <button type="submit" id="botonEnviar"></button>
+    </form>
+
+    <div class="mensaje-enviado" id="mensajeEnviado"></div>
+  </div>
+
+  <script>
+    const caja = document.getElementById("caja");
+    const contenido = document.getElementById("contenido");
+    const musica = document.getElementById("musica");
+    const select = document.getElementById("canciones");
+    const form = document.getElementById("formDeseo");
+    const mensajeEnviado = document.getElementById("mensajeEnviado");
+
+    // ---- Rellenar todos los textos desde config.js ----
+    document.title = CONFIG.titulos.sorpresa;
+    document.getElementById("mensajeCaja").textContent = CONFIG.sorpresa.mensajeCaja;
+    document.getElementById("tituloGracias").textContent = CONFIG.sorpresa.tituloGracias;
+    document.getElementById("presentacion").innerHTML =
+      CONFIG.aplicar(CONFIG.sorpresa.presentacion);
+    document.getElementById("inputNombre").placeholder = CONFIG.sorpresa.nombrePlaceholder;
+    document.getElementById("inputDeseo").placeholder = CONFIG.sorpresa.deseoPlaceholder;
+    document.getElementById("botonEnviar").innerHTML =
+      ICONOS.enviar + CONFIG.sorpresa.botonEnviar;
+
+    // Construir la lista de canciones y dejar la primera lista para sonar
+    CONFIG.sorpresa.canciones.forEach((cancion, i) => {
+      const opcion = document.createElement("option");
+      opcion.value = cancion.archivo;
+      opcion.textContent = cancion.etiqueta;
+      select.appendChild(opcion);
+      if (i === 0) musica.src = cancion.archivo;
+    });
+
+    let cajaAbierta = false;
+    caja.addEventListener("click", () => {
+      if (cajaAbierta) return;
+      cajaAbierta = true;
+      caja.classList.add("abierta");
+      lanzarConfetti();
+      setTimeout(() => {
+        contenido.style.display = "block";
+        musica.play().catch(() => {});
+      }, 600);
+    });
+
+    select.addEventListener("change", function () {
+      musica.src = this.value;
+      musica.play().catch(() => {});
+    });
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      form.style.display = "none";
+      mensajeEnviado.innerHTML = CONFIG.sorpresa.mensajeEnviado;
+    });
+  </script>
+</body>
+</html>
